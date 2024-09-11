@@ -12,7 +12,9 @@ import org.junit.Test;
 @Epic("Sprint 7. Project")
 @Feature("Группа тестов для API получения списка заказа")
 @DisplayName("4. Получение списка заказов")
-public class GetOrdersListTests extends OrdersAPIHandler {
+public class GetOrdersListTests {
+
+    private final OrdersAPIHandler ordersAPIHandler = new OrdersAPIHandler();
 
     @Test
     @DisplayName("Получение списка заказов")
