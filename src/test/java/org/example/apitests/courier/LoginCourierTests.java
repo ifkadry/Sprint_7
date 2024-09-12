@@ -15,7 +15,8 @@ import java.util.UUID;
 @Epic("Sprint 7. Project")
 @Feature("Группа тестов для API логина курьера")
 @DisplayName("2. Логин курьера")
-public class LoginCourierTests extends CourierAPIHandler {
+public class LoginCourierTests {
+    private CourierAPIHandler courierAPIHandler;
     private String login;
     private String password;
     private String firstName;
@@ -27,26 +28,26 @@ public class LoginCourierTests extends CourierAPIHandler {
         this.password = "pass_" + UUID.randomUUID();
         this.firstName = "name_" + UUID.randomUUID();
 
-        createCourier(login, password, firstName);
+        courierAPIHandler.createCourier(login, password, firstName);
     }
 
     @After
     @Step("Очистка данных после теста")
     public void clearAfterTests() {
-        Integer idCourier = getIdCourier(loginCourier(login, password));
+        Integer idCourier = courierAPIHandler.getIdCourier(courierAPIHandler.loginCourier(login, password));
         if (idCourier == null) return;
 
-        deleteCourier(idCourier);
+        courierAPIHandler.deleteCourier(idCourier);
     }
 
     @Test
     @DisplayName("Логин курьера в систему")
     @Description("Тест проверяет API логина курьера. Ожидаемый результат - курьер залогинен в системе, возвращается его id")
     public void loginCourierIsSuccess() {
-        Response response = loginCourier(login,password);
+        Response response = courierAPIHandler.loginCourier(login,password);
 
-        checkStatusCode(response, 200);
-        checkCourierIDNotNull(response);
+        courierAPIHandler.checkStatusCode(response, 200);
+        courierAPIHandler.checkCourierIDNotNull(response);
     }
 
     @Test

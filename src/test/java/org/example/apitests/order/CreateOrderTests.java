@@ -19,7 +19,8 @@ import java.util.List;
 @Epic("Sprint 7. Project")
 @Feature("Группа тестов для API создания заказа")
 @DisplayName("3. Создание заказа")
-public class CreateOrderTests extends OrdersAPIHandler {
+public class CreateOrderTests {
+    private final OrdersAPIHandler ordersAPIHandler;
     private String firstName;
     private String lastName;
     private String address;
@@ -31,6 +32,7 @@ public class CreateOrderTests extends OrdersAPIHandler {
     private Integer trackId;
 
     public CreateOrderTests(List<String> scooterColor) {
+        this.ordersAPIHandler = new OrdersAPIHandler();
         this.scooterColor = scooterColor;
     }
 
@@ -61,7 +63,7 @@ public class CreateOrderTests extends OrdersAPIHandler {
     public void clearAfterTests() {
         if (trackId == null) return;
 
-        deleteOrder(trackId);
+        ordersAPIHandler.deleteOrder(trackId);
     }
 
     @Test
@@ -70,11 +72,11 @@ public class CreateOrderTests extends OrdersAPIHandler {
     public void createOrderIsSuccess() {
         Allure.parameter("Цвет самоката", scooterColor);
 
-        Response response = createOrder(firstName, lastName, address, phone, rentTime, deliveryDate, comment, scooterColor);
-        checkStatusCode(response, 201);
-        checkResponseParamNotNull(response, "track");
+        Response response = ordersAPIHandler.createOrder(firstName, lastName, address, phone, rentTime, deliveryDate, comment, scooterColor);
+        ordersAPIHandler.checkStatusCode(response, 201);
+        ordersAPIHandler.checkResponseParamNotNull(response, "track");
 
-        this.trackId = getTrack(response);
+        this.trackId = ordersAPIHandler.getTrack(response);
     }
 
 }

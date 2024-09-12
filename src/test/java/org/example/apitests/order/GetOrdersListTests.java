@@ -20,9 +20,9 @@ public class GetOrdersListTests {
     @DisplayName("Получение списка заказов")
     @Description("Тест проверяет API получения списка заказов. Ожидаемый результат - возвращается список заказов")
     public void getOrderListWithoutParamsIsSuccess() {
-        Response response = getOrdersList();
+        Response response = ordersAPIHandler.getOrdersList();
 
-        checkStatusCode(response, 200);
-        checkOrdersInResponse(response);
+        ordersAPIHandler.checkStatusCode(response, 200);
+        ordersAPIHandler.checkOrdersInResponse(response);
     }
 }

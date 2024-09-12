@@ -15,7 +15,8 @@ import java.util.UUID;
 @Epic("Sprint 7. Project")
 @Feature("Группа тестов для API создания курьера")
 @DisplayName("1. Создание курьера")
-public class CreateCourierTests extends CourierAPIHandler {
+public class CreateCourierTests {
+    private final CourierAPIHandler courierAPIHandler;
     private String login;
     private String password;
     private String firstName;
@@ -34,27 +35,28 @@ public class CreateCourierTests extends CourierAPIHandler {
     @After
     @Step("Очистка данных после теста")
     public void cleanAfterTests() {
-        if (!isCourierCreated()) return;
+        if (!courierAPIHandler.isCourierCreated()) return;
 
-        Integer idCourier = getIdCourier(loginCourier(login, password));
+        Integer idCourier = courierAPIHandler.getIdCourier(courierAPIHandler.loginCourier(login, password));
 
         if (idCourier != null) {
-            deleteCourier(idCourier);
+            courierAPIHandler.deleteCourier(idCourier);
         }
 
-        setIsCreated(false);
+        courierAPIHandler.setIsCreated(false);
     }
 
     @Test
     @DisplayName("Создание нового курьера")
     @Description("Тест проверяет API создания нового курьера. Ожидаемый результат - новый курьер создан")
     public void createNewCourierIsSuccess() {
-        Response response = createCourier(login, password, firstName);
-        setIsCreated(isCourierCreated(response, 201));
+        Response response = courierAPIHandler.createCourier(login, password, firstName);
+        courierAPIHandler.setIsCreated(courierAPIHandler.isCourierCreated(response, 201));
 
-        checkStatusCode(response, 201);
-        checkMessage(response, "ok", true);
+        courierAPIHandler.checkStatusCode(response, 201);
+        courierAPIHandler.checkMessage(response, "ok", true);
     }
+}
 
     @Test
     @DisplayName("Создание двух одинаковых курьеров")
